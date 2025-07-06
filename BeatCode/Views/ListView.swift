@@ -8,26 +8,30 @@
 import SwiftUI
 
 struct ListView: View {
-    private let viewModel: ListViewModel
     private let itemStore: ItemStore
     
     init(itemStore: ItemStore) {
         self.itemStore = itemStore
-        self.viewModel = ListViewModel(itemStore: itemStore)
     }
     
     var body: some View {
         NavigationStack {
-            List(viewModel.items) { item in
+            List(itemStore.items) { item in
                 NavigationLink(destination: DetailView(item: item, itemStore: itemStore)) {
                     HStack {
                         Text(item.title)
+                        
                         Spacer()
+                        
                         Button(action: {
-                            viewModel.toggleFavorite(for: item)
+                            itemStore.toggleFavorite(for: item)
                         }) {
                             Image(systemName: item.isFavorite ? "heart.fill" : "heart")
                                 .foregroundColor(item.isFavorite ? .red : .gray)
+                                .font(.title2)
+                                .frame(width: 44, height: 44)
+                                .background(Color.gray.opacity(0.1))
+                                .clipShape(Circle())
                         }
                         .buttonStyle(PlainButtonStyle())
                     }

@@ -8,31 +8,35 @@
 import SwiftUI
 
 struct DetailView: View {
-    private let viewModel: DetailViewModel
+    let item: Item
+    private let itemStore: ItemStore
     
     init(item: Item, itemStore: ItemStore) {
-        self.viewModel = DetailViewModel(item: item, itemStore: itemStore)
+        self.item = item
+        self.itemStore = itemStore
     }
     
     var body: some View {
         VStack(spacing: 20) {
-            if let item = viewModel.item {
-                Text(item.title)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                
-                Button(action: {
-                    viewModel.toggleFavorite()
-                }) {
-                    HStack {
-                        Image(systemName: item.isFavorite ? "heart.fill" : "heart")
-                            .foregroundColor(item.isFavorite ? .red : .gray)
-                        Text(item.isFavorite ? "Remove from Favorites" : "Add to Favorites")
-                    }
-                    .padding()
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(10)
+            Text(item.title)
+                .font(.largeTitle)
+                .fontWeight(.bold)
+            
+            Button(action: {
+                itemStore.toggleFavorite(for: item)
+            }) {
+                HStack {
+                    Image(systemName: item.isFavorite ? "heart.fill" : "heart")
+                        .foregroundColor(item.isFavorite ? .red : .gray)
+                        .font(.title)
+                        .frame(width: 44, height: 44)
+                        .background(Color.gray.opacity(0.1))
+                        .clipShape(Circle())
+                    Text(item.isFavorite ? "Remove from Favorites" : "Add to Favorites")
                 }
+                .padding()
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(10)
             }
             
             Spacer()
