@@ -18,31 +18,29 @@ struct DetailView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Text(item.title)
-                .font(.largeTitle)
-                .fontWeight(.bold)
             
-            Button(action: {
-                itemStore.toggleFavorite(for: item)
-            }) {
-                HStack {
+            Text("Welcome to \(item.title)")
+                .font(.largeTitle)
+                .multilineTextAlignment(.center)
+         
+        }
+        .toolbar(content: {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    itemStore.toggleFavorite(for: item)
+                }) {
                     Image(systemName: item.isFavorite ? "heart.fill" : "heart")
                         .foregroundColor(item.isFavorite ? .red : .gray)
-                        .font(.title)
+                        .font(.title2)
                         .frame(width: 44, height: 44)
                         .background(Color.gray.opacity(0.1))
                         .clipShape(Circle())
-                    Text(item.isFavorite ? "Remove from Favorites" : "Add to Favorites")
                 }
-                .padding()
-                .background(Color.gray.opacity(0.1))
-                .cornerRadius(10)
+                .buttonStyle(PlainButtonStyle())
             }
-            
-            Spacer()
-        }
+        })
         .padding()
-        .navigationTitle("Detail")
+        .navigationTitle(item.title)
         .navigationBarTitleDisplayMode(.inline)
     }
 }
